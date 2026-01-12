@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Sorteio Online Simples</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 40px;
+    }
+    .container {
+      background: #fff;
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 { text-align: center; }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+    }
+    button {
+      cursor: pointer;
+      background: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+    }
+    .resultado {
+      margin-top: 15px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Sorteio Online</h2>
+
+    <input type="text" id="nome" placeholder="Digite seu nome">
+    <input type="number" id="numero" placeholder="Escolha um número">
+
+    <button onclick="participar()">Participar do Sorteio</button>
+    <button onclick="sortear()">Sortear</button>
+    <button onclick="novoSorteio()">Novo Sorteio</button>
+
+    <div class="resultado" id="resultado"></div>
+    <div class="resultado" id="ganhador"></div>
+  </div>
+
+  <script>
+    let participantes = [];
+    let sorteioRealizado = false;
+
+    function participar() {
+      if (sorteioRealizado) {
+        alert('O sorteio já foi realizado. Não é possível participar.');
+        return;
+      }
+
+      const nome = document.getElementById('nome').value.trim();
+      const numero = parseInt(document.getElementById('numero').value.trim());
+
+      if (!nome || isNaN(numero)) {
+        alert('Preencha o nome e o número');
+        return;
+      }
+
+      if (numero < 1 || numero > 2000) {
+        alert('O número deve estar entre 1 e 2000');
+        return;
+      }
+
+      participantes.push({ nome, numero });
+
+      alert('Participação registrada com sucesso!');
+
+      document.getElementById('nome').value = '';
+      document.getElementById('numero').value = '';
+    }
+
+    function sortear() {
+      if (participantes.length === 0) {
+        alert('Nenhum participante cadastrado');
+        return;
+      }
+
+      if (sorteioRealizado) {
+        alert('O sorteio já foi realizado');
+        return;
+      }
+
+      const indiceAleatorio = Math.floor(Math.random() * participantes.length);
+      const ganhador = participantes[indiceAleatorio];
+
+      document.getElementById('resultado').innerText =
+        'Total de participantes: ' + participantes.length;
+
+      document.getElementById('ganhador').innerText =
+        '🏆 Ganhador: ' + ganhador.nome + ' (Número escolhido: ' + ganhador.numero + ')';
+
+      sorteioRealizado = true;
+    }
+  
+    function novoSorteio() {
+      participantes = [];
+      sorteioRealizado = false;
+
+      document.getElementById('resultado').innerText = '';
+      document.getElementById('ganhador').innerText = '';
+
+      alert('Novo sorteio iniciado! Agora é possível cadastrar novos participantes.');
+    }
+  </script>
+</body>
+</html>
